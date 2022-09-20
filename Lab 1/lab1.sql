@@ -1,51 +1,63 @@
 ---- 1b
-/*
-Delete this block comment and place your answer to 1b here.
-*/
+SELECT job, COUNT(*) as count FROM Employee GROUP BY job ORDER BY job asc;
 
 ---- 1e
-/*
-Delete this block comment and place your answer to 1e here.
-*/
-
+SELECT deptID FROM Employee
+  WHERE job = "engineer"
+  GROUP BY deptID
+  HAVING count(*) = (SELECT MAX(a.count) FROM (SELECT count(*) as count
+  FROM Employee
+  WHERE job = "engineer"
+  GROUP BY deptID) a);
 
 ---- 1g
-/*
-Delete this block comment and place your answer to 1g here.
-*/
+SELECT Employee.empID
+FROM Employee 
+WHERE Employee.salary = (
+  SELECT MAX(e.salary) FROM 
+	(SELECT * FROM
+	Employee
+	WHERE salary < (SELECT MAX(salary)
+	FROM Employee)) 
+  e)
 
 
 ---- 2a
-/*
-Delete this block comment and place your answer to 2a here.
-*/
-
+SELECT empName, Employee.empID
+FROM Employee LEFT JOIN Assigned
+ON Employee.empID = Assigned.empID
+WHERE Assigned.projID IS NULL;
 
 ---- 2e
-/*
-Delete this block comment and place your answer to 2e here.
-*/
-
+SELECT projID, SUM(salary) as projectSalary
+FROM Employee 
+LEFT JOIN Assigned
+ON Employee.empID = Assigned.empID
+GROUP BY projID;
 
 ---- 3a
-/*
-Delete this block comment and place your answer to 3a here.
-*/
+UPDATE Employee
+LEFT JOIN Assigned a
+ON a.empID = Employee.empID
+LEFT JOIN Project p
+ON p.projID = a.projID
+SET salary = salary * 1.10
+WHERE p.title = "compiler"
 
 
 ---- 3b
 /*
-Delete this block comment and place your answer to 3b here.
+Stephen
 */
 
 
 ---- 3c
 /*
-Delete this block comment and place your answer to 3c here.
+Ernest
 */
 
 
 ---- 3d
 /*
-Delete this block comment and place your answer to 3d here.
+Nick
 */
