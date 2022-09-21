@@ -58,6 +58,13 @@ Ernest
 
 
 ---- 3d
-/*
-Nick
-*/
+UPDATE Employee
+  LEFT JOIN Assigned a
+  	ON a.empID = Employee.empID
+  LEFT JOIN Project p
+  	ON p.projID = a.projID
+SET Employee.shift = CASE
+  WHEN (p.projID IS NULL) then ""
+  WHEN (p.projID IS NOT NULL) and (Employee.empID % 2) = 0 THEN "DAY"
+  WHEN (p.projID IS NOT NULL) and (Employee.empID % 2) != 0 THEN "NIGHT"
+END;
