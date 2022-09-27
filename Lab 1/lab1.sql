@@ -1,25 +1,37 @@
 ---- 1b
-SELECT job, COUNT(*) as count FROM Employee GROUP BY job ORDER BY job asc;
+SELECT job, COUNT(*) as count 
+FROM Employee 
+GROUP BY job 
+ORDER BY job asc;
 
 ---- 1e
-SELECT deptID FROM Employee
-  WHERE job = "engineer"
-  GROUP BY deptID
-  HAVING count(*) = (SELECT MAX(a.count) FROM (SELECT count(*) as count
-  FROM Employee
-  WHERE job = "engineer"
-  GROUP BY deptID) a);
+SELECT deptID 
+FROM Employee
+WHERE job = "engineer"
+GROUP BY deptID
+HAVING count(*) = (
+  SELECT MAX(a.count) 
+  FROM (
+    SELECT count(*) as count
+    FROM Employee
+    WHERE job = "engineer"
+    GROUP BY deptID
+  ) as a
+);
 
 ---- 1g
 SELECT Employee.empID
 FROM Employee 
 WHERE Employee.salary = (
   SELECT MAX(e.salary) FROM 
-	(SELECT * FROM
-	Employee
-	WHERE salary < (SELECT MAX(salary)
-	FROM Employee)) 
-  e)
+	(SELECT *
+  FROM Employee
+	WHERE salary < (
+    SELECT MAX(salary)
+	  FROM Employee
+    )
+  ) as e
+)
 
 
 ---- 2a
