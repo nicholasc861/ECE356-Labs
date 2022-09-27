@@ -52,9 +52,7 @@ Stephen
 
 
 ---- 3c
-/*
-Ernest
-*/
+ALTER TABLE Employee ADD shift varchar(5);
 
 
 ---- 3d
