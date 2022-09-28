@@ -8,8 +8,7 @@ ORDER BY job asc;
 SELECT deptID 
 FROM Employee
 WHERE job = "engineer"
-GROUP BY deptID
-HAVING count(*) = (
+AND count(*) = (
   SELECT MAX(a.count) 
   FROM (
     SELECT count(*) as count
@@ -17,7 +16,9 @@ HAVING count(*) = (
     WHERE job = "engineer"
     GROUP BY deptID
   ) as a
-);
+)
+GROUP BY deptID;
+
 
 ---- 1g
 SELECT Employee.empID
@@ -58,13 +59,19 @@ WHERE p.title = "compiler"
 
 
 ---- 3b
-/*
-Stephen
-*/
+UPDATE Employee
+	LEFT JOIN Department d
+    ON d.deptID = Employee.deptID
+SET Employee.salary = CASE
+	WHEN d.location = "Waterloo" THEN Employee.salary * 1.08
+    WHEN Employee.job = "janitor" THEN Employee.salary * 1.05
+    ELSE Employee.salary
+END;
 
 
 ---- 3c
-ALTER TABLE Employee ADD shift varchar(5);
+ALTER TABLE Employee 
+ADD shift varchar(5);
 
 
 ---- 3d
