@@ -32,7 +32,7 @@ WHERE Employee.salary = (
 	  FROM Employee
     )
   ) as e
-)
+);
 
 
 ---- 2a
@@ -55,7 +55,7 @@ ON a.empID = Employee.empID
 LEFT JOIN Project p
 ON p.projID = a.projID
 SET salary = salary * 1.10
-WHERE p.title = "compiler"
+WHERE p.title = "compiler";
 
 
 ---- 3b
