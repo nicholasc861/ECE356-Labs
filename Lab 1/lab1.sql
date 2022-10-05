@@ -8,7 +8,8 @@ ORDER BY job asc;
 SELECT deptID 
 FROM Employee
 WHERE job = "engineer"
-AND count(*) = (
+GROUP BY deptID
+HAVING count(*) = (
   SELECT MAX(a.count) 
   FROM (
     SELECT count(*) as count
@@ -16,8 +17,7 @@ AND count(*) = (
     WHERE job = "engineer"
     GROUP BY deptID
   ) as a
-)
-GROUP BY deptID;
+);
 
 
 ---- 1g
@@ -42,11 +42,15 @@ ON Employee.empID = Assigned.empID
 WHERE Assigned.projID IS NULL;
 
 ---- 2e
-SELECT projID, SUM(salary) as projectSalary
-FROM Employee 
-LEFT JOIN Assigned
-ON Employee.empID = Assigned.empID
-GROUP BY projID;
+SELECT a.projID, SUM(a.salary) as projectSalary
+FROM (
+  (SELECT Assigned.projID, Employee.salary FROM Employee 
+  LEFT JOIN Assigned
+  ON Employee.empID = Assigned.empID)
+  UNION 
+  (SELECT NULL as projID, 0 as salary) 
+) a
+GROUP BY a.projID;
 
 ---- 3a
 UPDATE Employee
