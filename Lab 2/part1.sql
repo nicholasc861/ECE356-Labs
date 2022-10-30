@@ -49,12 +49,13 @@ PRIMARY KEY (projID)
 CREATE TABLE Assigned(
 empID INT,
 projID INT,
-roleID INT,
+roleID INT NOT NULL,
 role_description VARCHAR(100),
 role_level VARCHAR(100),
 start_date DATE,
 end_date DATE,
 assigned_status VARCHAR(20),
+PRIMARY KEY (empID, projID, roleID),
 FOREIGN KEY (projID) REFERENCES Project(projID),
 FOREIGN KEY (empID) REFERENCES Employee(empID)
 );
