@@ -59,10 +59,11 @@ end_date DATE,
 assigned_status VARCHAR(20),
 PRIMARY KEY (empID, projID, roleID),
 FOREIGN KEY (projID) REFERENCES Project(projID),
-FOREIGN KEY (empID) REFERENCES Employee(empID)
+FOREIGN KEY (empID) REFERENCES Employee(empID),
+FOREIGN KEY (roleID) REFERENCES Roles(roleID)
 );
 
-CREATE TABLE Role(
+CREATE TABLE Roles(
 roleID INT,
 role_description VARCHAR(100),
 role_level VARCHAR(100),
@@ -118,13 +119,13 @@ INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_statu
 INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
                VALUES(79, 123, 5, '2016-01-03', NULL, 'active');
 
-INSERT INTO Role(roleID, role_description, role_level)
+INSERT INTO Roles(roleID, role_description, role_level)
                VALUES(1, 'Programmer', 'L1');
-INSERT INTO Role(roleID, role_description, role_level)
+INSERT INTO Roles(roleID, role_description, role_level)
                VALUES(2, 'Admin Assistant', 'L1');
-INSERT INTO Role(roleID, role_description, role_level)
+INSERT INTO Roles(roleID, role_description, role_level)
                VALUES(3, 'Manager', 'L4');
-INSERT INTO Role(roleID, role_description, role_level)
+INSERT INTO Roles(roleID, role_description, role_level)
                VALUES(4, 'Database specialist', 'L1');
-INSERT INTO Role(roleID, role_description, role_level)
+INSERT INTO Roles(roleID, role_description, role_level)
                VALUES(5, 'Engineer', 'L2');
