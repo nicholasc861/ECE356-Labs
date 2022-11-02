@@ -23,7 +23,11 @@ DROP TABLE IF EXISTS Department;
 CREATE TABLE Department(
 deptID INT,
 deptName VARCHAR(100),
-location VARCHAR(100)
+address_line VARCHAR(100),
+city VARCHAR(100),
+province VARCHAR(100),
+postal_code VARCHAR(6),
+PRIMARY KEY (deptID)
 );
 
 CREATE TABLE Employee(
@@ -33,7 +37,8 @@ emp_initials VARCHAR(3),
 emp_lname VARCHAR(20),
 job VARCHAR(100),
 deptID INT,
-salary INT
+salary INT,
+PRIMARY KEY (empID)
 );
 
 CREATE TABLE Project(
@@ -41,18 +46,27 @@ projID INT,
 title VARCHAR(100),
 phase VARCHAR(20),
 budget DECIMAL(10,2),
-funds DECIMAL(10,2)
+funds DECIMAL(10,2),
+PRIMARY KEY (projID)
 );
 
 CREATE TABLE Assigned(
 empID INT,
 projID INT,
 roleID INT,
-role_description VARCHAR(100),
-role_level VARCHAR(100),
 start_date DATE,
 end_date DATE,
-assigned_status VARCHAR(20)
+assigned_status VARCHAR(20),
+PRIMARY KEY (empID, projID, roleID),
+FOREIGN KEY (projID) REFERENCES Project(projID),
+FOREIGN KEY (empID) REFERENCES Employee(empID)
+);
+
+CREATE TABLE Role(
+roleID INT,
+role_description VARCHAR(100),
+role_level VARCHAR(100),
+PRIMARY KEY (roleID)
 );
 
 #
@@ -83,23 +97,34 @@ INSERT INTO Project(projID, title, phase,budget, funds) VALUES(345, 'Compiler', 
 INSERT INTO Project(projID, title, phase, budget, funds) VALUES(123, 'Display', 'testing',650000.00, 370000.00);
 INSERT INTO Project(projID, title, phase, budget, funds) VALUES(333, 'Database', 'released',650000.00, 370000.00);
 
-INSERT INTO Assigned(empID, projID, roleID, role_description,role_level,start_date,end_date,assigned_status)
-               VALUES(23, 345, 1,'Programmer','L1','2016-06-20',NULL,'active');
-INSERT INTO Assigned(empID, projID,roleID, role_description,role_level, start_date,end_date,assigned_status)
-               VALUES(66, 123, 1,'Programmer','L1','2016-08-25','2016-12-25','inactive');
-INSERT INTO Assigned(empID, projID,roleID, role_description,role_level, start_date,end_date,assigned_status)
-               VALUES(77, 123, 2,'Admin Assistant','L1','2015-01-03',NULL,'active');
-INSERT INTO Assigned(empID, projID,roleID, role_description,role_level, start_date,end_date,assigned_status)
-               VALUES(45, 123,3, 'Manager','L4','2015-02-03',NULL,'active');
-INSERT INTO Assigned(empID, projID,roleID, role_description,role_level, start_date,end_date,assigned_status)
-               VALUES(89, 123,3, 'Manager','L4','2017-02-03',NULL,'active');
-INSERT INTO Assigned(empID, projID, roleID,role_description,role_level, start_date,end_date,assigned_status)
-               VALUES(92, 345, 4,'Database specialist','L1','2017-02-03',NULL,'active');
-INSERT INTO Assigned(empID, projID,roleID, role_description,role_level, start_date,end_date,assigned_status)
-               VALUES(89, 345, 3,'Manager','L4','2017-05-03',NULL,'active');
-INSERT INTO Assigned(empID, projID,roleID, role_description,role_level, start_date,end_date,assigned_status)
-               VALUES(92, 345, 5,'Engineer','L2','2017-01-03',NULL,'active');
-INSERT INTO Assigned(empID, projID,roleID, role_description,role_level, start_date,end_date,assigned_status)
-               VALUES(78, 345, 3,'Manager','L4','2016-01-03','2017-01-03','inactive');
-INSERT INTO Assigned(empID, projID,roleID, role_description,role_level, start_date,end_date,assigned_status)
-               VALUES(79, 123, 5,'Engineer','L2','2016-01-03',NULL,'active');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(23, 345, 1, '2016-06-20', NULL, 'active');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(66, 123, 1, '2016-08-25', '2016-12-25', 'inactive');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(77, 123, 2, '2015-01-03', NULL, 'active');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(45, 123, 3, '2015-02-03', NULL, 'active');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(89, 123, 3, '2017-02-03', NULL, 'active');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(92, 345, 4, '2017-02-03', NULL, 'active');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(89, 345, 3, '2017-05-03', NULL, 'active');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(92, 345, 5, '2017-01-03', NULL, 'active');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(78, 345, 3, '2016-01-03', '2017-01-03', 'inactive');
+INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
+               VALUES(79, 123, 5, '2016-01-03', NULL, 'active');
+
+INSERT INTO Role(roleID, role_description, role_level)
+               VALUES(1, 'Programmer', 'L1');
+INSERT INTO Role(roleID, role_description, role_level)
+               VALUES(2, 'Admin Assistant', 'L1');
+INSERT INTO Role(roleID, role_description, role_level)
+               VALUES(3, 'Manager', 'L4');
+INSERT INTO Role(roleID, role_description, role_level)
+               VALUES(4, 'Database specialist', 'L1');
+INSERT INTO Role(roleID, role_description, role_level)
+               VALUES(5, 'Engineer', 'L2');
