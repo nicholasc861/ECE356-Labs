@@ -27,7 +27,7 @@ deptName VARCHAR(100),
 address_line VARCHAR(100),
 city VARCHAR(100),
 province VARCHAR(100),
-postal_code VARCHAR(6),
+postalcode VARCHAR(6),
 PRIMARY KEY (deptID)
 );
 
@@ -76,13 +76,13 @@ FOREIGN KEY (roleID) REFERENCES Roles(roleID)
 #
 # Insert
 
-INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(3, 'Marketing', '200 University Av W', 'Waterloo', 'ON', 'N2L3G1');
-INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(7, 'Research', '10 Victoria St A', 'Kitchener', 'ON', 'N2G1C5');
-INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(12, 'Software', '27 King College Cir', 'Toronto', 'ON', 'M5S5R5');
-INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(13, 'Computing', '1265 Military Trail', 'Scarborough', 'ON', 'M1C14A');
-INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(24, 'Training', '27 King College Cir', 'Toronto', 'ON', 'M5S5R5');
-INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(25, 'Human Resources', '1265 Military Trail', 'Scarborough', 'ON', 'M1C14A');
-INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(27, 'Food Services', '1265 Military Trail', 'Scarborough', 'ON', 'M1C14A');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postalcode) VALUES(3, 'Marketing', '200 University Av W', 'Waterloo', 'ON', 'N2L3G1');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postalcode) VALUES(7, 'Research', '10 Victoria St A', 'Kitchener', 'ON', 'N2G1C5');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postalcode) VALUES(12, 'Software', '27 King College Cir', 'Toronto', 'ON', 'M5S5R5');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postalcode) VALUES(13, 'Computing', '1265 Military Trail', 'Scarborough', 'ON', 'M1C14A');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postalcode) VALUES(24, 'Training', '27 King College Cir', 'Toronto', 'ON', 'M5S5R5');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postalcode) VALUES(25, 'Human Resources', '1265 Military Trail', 'Scarborough', 'ON', 'M1C14A');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postalcode) VALUES(27, 'Food Services', '1265 Military Trail', 'Scarborough', 'ON', 'M1C14A');
 
 INSERT INTO Employee(empID, emp_fname,emp_initials,emp_lname, job, deptID, salary) VALUES(23, 'Peter','M','Lewis', 'Programmer', 12, 35000);
 INSERT INTO Employee(empID, emp_fname,emp_initials,emp_lname, job, deptID, salary) VALUES(45, 'Kelly','M','Baldwin', 'Engineer', 7, 37000);
