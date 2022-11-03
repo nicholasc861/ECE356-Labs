@@ -16,6 +16,7 @@ DROP TABLE IF EXISTS Assigned;
 DROP TABLE IF EXISTS Project;
 DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS Department;
+DROP TABLE IF EXISTS Roles;
 
 #
 # CREATE tables
@@ -50,6 +51,13 @@ funds DECIMAL(10,2),
 PRIMARY KEY (projID)
 );
 
+CREATE TABLE Roles(
+roleID INT,
+role_description VARCHAR(100),
+role_level VARCHAR(100),
+PRIMARY KEY (roleID)
+);
+
 CREATE TABLE Assigned(
 empID INT,
 projID INT,
@@ -63,23 +71,18 @@ FOREIGN KEY (empID) REFERENCES Employee(empID),
 FOREIGN KEY (roleID) REFERENCES Roles(roleID)
 );
 
-CREATE TABLE Roles(
-roleID INT,
-role_description VARCHAR(100),
-role_level VARCHAR(100),
-PRIMARY KEY (roleID)
-);
+
 
 #
 # Insert
 
-INSERT INTO Department(deptID, deptName, location) VALUES(3, 'Marketing', '200 University Av W, Waterloo, ON, N2L3G1');
-INSERT INTO Department(deptID, deptName, location) VALUES(7, 'Research', '10 Victoria St A, Kitchener, ON, N2G1C5');
-INSERT INTO Department(deptID, deptName, location) VALUES(12, 'Software', '27 King College Cir, Toronto, ON, M5S5R5');
-INSERT INTO Department(deptID, deptName, location) VALUES(13, 'Computing', '1265 Military Trail, Scarborough, ON, M1C14A');
-INSERT INTO Department(deptID, deptName, location) VALUES(24, 'Training', '27 King College Cir, Toronto, ON, M5S5R5');
-INSERT INTO Department(deptID, deptName, location) VALUES(25, 'Human Resources', '1265 Military Trail, Scarborough, ON, M1C14A');
-INSERT INTO Department(deptID, deptName, location) VALUES(27, 'Food Services', '1265 Military Trail, Scarborough, ON, M1C14A');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(3, 'Marketing', '200 University Av W', 'Waterloo', 'ON', 'N2L3G1');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(7, 'Research', '10 Victoria St A', 'Kitchener', 'ON', 'N2G1C5');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(12, 'Software', '27 King College Cir', 'Toronto', 'ON', 'M5S5R5');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(13, 'Computing', '1265 Military Trail', 'Scarborough', 'ON', 'M1C14A');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(24, 'Training', '27 King College Cir', 'Toronto', 'ON', 'M5S5R5');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(25, 'Human Resources', '1265 Military Trail', 'Scarborough', 'ON', 'M1C14A');
+INSERT INTO Department(deptID, deptName, address_line, city, province, postal_code) VALUES(27, 'Food Services', '1265 Military Trail', 'Scarborough', 'ON', 'M1C14A');
 
 INSERT INTO Employee(empID, emp_fname,emp_initials,emp_lname, job, deptID, salary) VALUES(23, 'Peter','M','Lewis', 'Programmer', 12, 35000);
 INSERT INTO Employee(empID, emp_fname,emp_initials,emp_lname, job, deptID, salary) VALUES(45, 'Kelly','M','Baldwin', 'Engineer', 7, 37000);
@@ -97,6 +100,17 @@ INSERT INTO Employee(empID, emp_fname,emp_initials,emp_lname, job, deptID, salar
 INSERT INTO Project(projID, title, phase,budget, funds) VALUES(345, 'Compiler', 'development', 500000.00, 250000.00);
 INSERT INTO Project(projID, title, phase, budget, funds) VALUES(123, 'Display', 'testing',650000.00, 370000.00);
 INSERT INTO Project(projID, title, phase, budget, funds) VALUES(333, 'Database', 'released',650000.00, 370000.00);
+
+INSERT INTO Roles(roleID, role_description, role_level)
+               VALUES(1, 'Programmer', 'L1');
+INSERT INTO Roles(roleID, role_description, role_level)
+               VALUES(2, 'Admin Assistant', 'L1');
+INSERT INTO Roles(roleID, role_description, role_level)
+               VALUES(3, 'Manager', 'L4');
+INSERT INTO Roles(roleID, role_description, role_level)
+               VALUES(4, 'Database specialist', 'L1');
+INSERT INTO Roles(roleID, role_description, role_level)
+               VALUES(5, 'Engineer', 'L2');
 
 INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
                VALUES(23, 345, 1, '2016-06-20', NULL, 'active');
@@ -118,14 +132,3 @@ INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_statu
                VALUES(78, 345, 3, '2016-01-03', '2017-01-03', 'inactive');
 INSERT INTO Assigned(empID, projID, roleID, start_date, end_date, assigned_status)
                VALUES(79, 123, 5, '2016-01-03', NULL, 'active');
-
-INSERT INTO Roles(roleID, role_description, role_level)
-               VALUES(1, 'Programmer', 'L1');
-INSERT INTO Roles(roleID, role_description, role_level)
-               VALUES(2, 'Admin Assistant', 'L1');
-INSERT INTO Roles(roleID, role_description, role_level)
-               VALUES(3, 'Manager', 'L4');
-INSERT INTO Roles(roleID, role_description, role_level)
-               VALUES(4, 'Database specialist', 'L1');
-INSERT INTO Roles(roleID, role_description, role_level)
-               VALUES(5, 'Engineer', 'L2');
