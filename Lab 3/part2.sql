@@ -22,8 +22,8 @@ BEGIN
     WHERE Location.cityName = "Kitchener";
     
     SELECT 0 AS StatusCode;
-    IF (
-      SELECT 1 = 1
+    IF EXISTS (
+      SELECT *
       FROM Employee
       LEFT JOIN Department
       ON Employee.deptID = Department.deptID
@@ -33,18 +33,10 @@ BEGIN
       AND Employee.salary > 50000
     ) THEN
     BEGIN
-        ROLLBACK TO SAVEPOINT BeforeRaise;x
+        ROLLBACK TO SAVEPOINT BeforeRaise;
         SELECT 1 AS StatusCode;
     END;
     END IF;
     
     COMMIT;
 END
-
-
-
-
-
-
-
-
