@@ -7,7 +7,44 @@
 
 DROP PROCEDURE IF EXISTS sp_pay_raise_kitchener;
 
-DELIMITER //
 CREATE PROCEDURE sp_pay_raise_kitchener()
-END //
-DELIMITER ;
+BEGIN
+	
+	START TRANSACTION;
+    SAVEPOINT BeforeRaise;
+    
+    UPDATE Employee
+    LEFT JOIN Department
+    ON Employee.deptID = Department.deptID
+    LEFT JOIN Location
+    ON Department.locID = Location.locID
+    SET salary = salary * 1.03
+    WHERE Location.cityName = "Kitchener";
+    
+    SELECT 0 AS StatusCode;
+    IF (
+      SELECT 1 = 1
+      FROM Employee
+      LEFT JOIN Department
+      ON Employee.deptID = Department.deptID
+      LEFT JOIN Location
+      ON Department.locID = Location.locID
+      WHERE Location.cityName = "Kitchener"
+      AND Employee.salary > 50000
+    ) THEN
+    BEGIN
+        ROLLBACK TO SAVEPOINT BeforeRaise;x
+        SELECT 1 AS StatusCode;
+    END;
+    END IF;
+    
+    COMMIT;
+END
+
+
+
+
+
+
+
+
