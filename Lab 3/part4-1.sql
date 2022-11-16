@@ -10,3 +10,41 @@
 # DROP INDEX IF EXISTS ...
 # CREATE INDEX ...
 # ...
+DROP PROCEDURE IF EXISTS drop_idx_if_exists;
+
+DELIMITER //
+CREATE PROCEDURE drop_idx_if_exists()
+BEGIN
+	IF EXISTS (
+      		SELECT *
+            FROM INFORMATION_SCHEMA.STATISTICS
+            WHERE TABLE_NAME = 'Review'
+            AND INDEX_NAME = 'review_date_idx'
+            AND INDEX_SCHEMA='yelp_db_small'
+        ) THEN
+        BEGIN
+		    DROP INDEX review_date_idx on Review;
+        END;
+	END IF;
+END//
+DELIMITER ;
+
+CALL drop_idx_if_exists();
+
+EXPLAIN SELECT COUNT(*)
+FROM Review
+WHERE MONTH(date) = '5' AND YEAR(date)='2014';
+
+SELECT COUNT(*)
+FROM Review
+WHERE MONTH(date) = '5' AND YEAR(date)='2014';
+
+CREATE INDEX review_date_idx ON Review(date);
+
+EXPLAIN SELECT COUNT(*)
+FROM Review
+WHERE MONTH(date) = '5' AND YEAR(date)='2014';
+
+SELECT COUNT(*)
+FROM Review
+WHERE MONTH(date) = '5' AND YEAR(date)='2014';

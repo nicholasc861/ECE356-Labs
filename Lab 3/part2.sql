@@ -6,7 +6,7 @@
 # specifications.
 
 DROP PROCEDURE IF EXISTS sp_pay_raise_kitchener;
-
+DELIMITER //
 CREATE PROCEDURE sp_pay_raise_kitchener()
 BEGIN
 	
@@ -39,4 +39,5 @@ BEGIN
     END IF;
     
     COMMIT;
-END
+END//
+DELIMITER;

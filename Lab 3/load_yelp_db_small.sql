@@ -1,10 +1,10 @@
 SET sql_mode = ""; # reads double quotes as characters
 
-/*
+
 DROP DATABASE IF EXISTS yelp_db_small; # Drop the database if already available. If you plan to run this code more than once, make sure to remove this line as it will take a long time to excute
 CREATE DATABASE yelp_db_small; # Creates the database with the shown name. Make sure you use the exact spelling for the name of the DB
 use yelp_db_small; # Chooses the DB yelp_db_small. The rest of the work will be applied to this chosen DB
-*/
+
 
 DROP TABLE IF EXISTS `Business`; # Drops the table Business if it already exists
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

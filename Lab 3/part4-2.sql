@@ -10,3 +10,53 @@
 # DROP INDEX IF EXISTS ...
 # CREATE INDEX ...
 # ...
+DROP PROCEDURE IF EXISTS drop_idx_if_exists;
+
+DELIMITER //
+CREATE PROCEDURE drop_idx_if_exists()
+BEGIN
+	IF EXISTS (
+      		SELECT *
+            FROM INFORMATION_SCHEMA.STATISTICS
+            WHERE TABLE_NAME = 'Review'
+            AND INDEX_NAME = 'review_user_id_business_id_idx'
+            AND INDEX_SCHEMA='yelp_db_small'
+        ) THEN
+        BEGIN
+			DROP INDEX review_user_id_business_id_idx on Review;
+        END;
+	END IF;
+END//
+DELIMITER ;
+
+CALL drop_idx_if_exists();
+
+EXPLAIN SELECT ud.name, r.review_id, b.name
+FROM User_data as ud
+	INNER JOIN (
+		Business as b RIGHT JOIN Review as r ON r.business_id = b.business_id
+    ) ON r.user_id = ud.user_id
+WHERE r.user_id='KGYM_D6JOkjwnzslWO0QHg';
+
+SELECT ud.name, r.review_id, b.name
+FROM User_data as ud
+	INNER JOIN (
+		Business as b RIGHT JOIN Review as r ON r.business_id = b.business_id
+    ) ON r.user_id = ud.user_id
+WHERE r.user_id='KGYM_D6JOkjwnzslWO0QHg';
+
+CREATE INDEX review_user_id_business_id_idx ON Review (user_id, business_id);
+
+EXPLAIN SELECT ud.name, r.review_id, b.name
+FROM User_data as ud
+	INNER JOIN (
+		Business as b RIGHT JOIN Review as r ON r.business_id = b.business_id
+    ) ON r.user_id = ud.user_id
+WHERE r.user_id='KGYM_D6JOkjwnzslWO0QHg';
+
+SELECT ud.name, r.review_id, b.name
+FROM User_data as ud
+	INNER JOIN (
+		Business as b RIGHT JOIN Review as r ON r.business_id = b.business_id
+    ) ON r.user_id = ud.user_id
+WHERE r.user_id='KGYM_D6JOkjwnzslWO0QHg';
