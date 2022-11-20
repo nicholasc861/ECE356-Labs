@@ -31,20 +31,20 @@ DELIMITER ;
 
 CALL drop_idx_if_exists();
 
-EXPLAIN SELECT COUNT(*)
+EXPLAIN SELECT COUNT(*) as count
 FROM Review
 WHERE MONTH(date) = '5' AND YEAR(date)='2014';
 
-SELECT COUNT(*)
+SELECT COUNT(*) as count
 FROM Review
 WHERE MONTH(date) = '5' AND YEAR(date)='2014';
 
 CREATE INDEX review_date_idx ON Review(date);
 
-EXPLAIN SELECT COUNT(*)
+EXPLAIN SELECT COUNT(*) as count
 FROM Review
 WHERE MONTH(date) = '5' AND YEAR(date)='2014';
 
-SELECT COUNT(*)
+SELECT COUNT(*) as count
 FROM Review
 WHERE MONTH(date) = '5' AND YEAR(date)='2014';
