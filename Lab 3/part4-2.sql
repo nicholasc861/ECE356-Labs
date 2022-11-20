@@ -31,14 +31,14 @@ DELIMITER ;
 
 CALL drop_idx_if_exists();
 
-EXPLAIN SELECT ud.name, r.review_id, b.name
+EXPLAIN SELECT ud.name, r.review_id, b.name as business_name
 FROM User_data as ud
 	INNER JOIN (
 		Business as b RIGHT JOIN Review as r ON r.business_id = b.business_id
     ) ON r.user_id = ud.user_id
 WHERE r.user_id='KGYM_D6JOkjwnzslWO0QHg';
 
-SELECT ud.name, r.review_id, b.name
+SELECT ud.name, r.review_id, b.name as business_name
 FROM User_data as ud
 	INNER JOIN (
 		Business as b RIGHT JOIN Review as r ON r.business_id = b.business_id
@@ -47,14 +47,14 @@ WHERE r.user_id='KGYM_D6JOkjwnzslWO0QHg';
 
 CREATE INDEX review_user_id ON Review (user_id);
 
-EXPLAIN SELECT ud.name, r.review_id, b.name
+EXPLAIN SELECT ud.name, r.review_id, b.name as business_name
 FROM User_data as ud
 	INNER JOIN (
 		Business as b RIGHT JOIN Review as r ON r.business_id = b.business_id
     ) ON r.user_id = ud.user_id
 WHERE r.user_id='KGYM_D6JOkjwnzslWO0QHg';
 
-SELECT ud.name, r.review_id, b.name
+SELECT ud.name, r.review_id, b.name as business_name
 FROM User_data as ud
 	INNER JOIN (
 		Business as b RIGHT JOIN Review as r ON r.business_id = b.business_id
