@@ -19,11 +19,11 @@ BEGIN
       		SELECT *
             FROM INFORMATION_SCHEMA.STATISTICS
             WHERE TABLE_NAME = 'Review'
-            AND INDEX_NAME = 'review_user_id_business_id_idx'
+            AND INDEX_NAME = 'review_user_id'
             AND INDEX_SCHEMA='yelp_db_small'
         ) THEN
         BEGIN
-			DROP INDEX review_user_id_business_id_idx on Review;
+			DROP INDEX review_user_id on Review;
         END;
 	END IF;
 END//
@@ -45,7 +45,7 @@ FROM User_data as ud
     ) ON r.user_id = ud.user_id
 WHERE r.user_id='KGYM_D6JOkjwnzslWO0QHg';
 
-CREATE INDEX review_user_id_business_id_idx ON Review (user_id, business_id);
+CREATE INDEX review_user_id ON Review (user_id);
 
 EXPLAIN SELECT ud.name, r.review_id, b.name
 FROM User_data as ud
