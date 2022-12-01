@@ -42,16 +42,25 @@ def predict_from_tree(clf, data):
     ans = clf.predict(X)
 
     test = 0
+    test1 = 0
+    test2 = 0
     for i in range(len(ans)):
         if ans[i] == Y[i]:
             test += 1
+        if ans[i] == 1:
+            test1 += 1
+        if Y[i] == 1:
+            test2 += 1
+
     print(test / len(ans))
+    print(test1)
+    print(test2)
 
 
 def main():
     data = read_csv(FILE_NAME)
 
-    clf = build_decision_tree(data[0:int(0.8*len(data))])
-    predict_from_tree(clf, data[int(0.8*len(data)):])
+    clf = build_decision_tree(data[0:int(0.2*len(data))])
+    predict_from_tree(clf, data[int(0.2*len(data)):])
 
 main()
