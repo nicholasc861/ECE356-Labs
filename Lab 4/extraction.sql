@@ -4,19 +4,21 @@ SELECT A.playerID,
        COALESCE(B.gamesPitched, 0) as gamesPitched,
        COALESCE(C.gamesFielded, 0) as gamesFielded,
        COALESCE(D.totalGames, 0) as totalGames,
-       COALESCE(D.years, 0) as totalYears,
-       A.rbi,
-       F.managerWins,
+       COALESCE(D.years, 0) as totalSeasons,
+       COALESCE(A.rbi, 0) as totalRBI,
+       COALESCE(A.rbi / A.atBats, 0) as ABtoRBI,
+       COALESCE(B.pitchingER / B.gamesPitched, 0) as pitchingERA,
+       COALESCE(F.managerWins, 0) as managerWins,
        COALESCE(E.awardsWon, 0) as awardsWon,
        IF (A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame), 'Y', 'N') AS nominated
 FROM
 (
-    SELECT pe.playerID, SUM(B.G) as gamesBatted, AVG(B.RBI) as rbi
+    SELECT pe.playerID, SUM(B.G) as gamesBatted, SUM(B.AB) as atBats, SUM(B.RBI) as rbi
     FROM People pe
     LEFT JOIN Batting B on pe.playerID = B.playerID
     GROUP BY pe.playerID) as A
 JOIN (
-    SELECT pe.playerID, SUM(P.G) as gamesPitched
+    SELECT pe.playerID, SUM(P.G) as gamesPitched, SUM(P.ER) as pitchingER
     FROM People pe
     LEFT JOIN Pitching P on pe.playerID = P.playerID
     GROUP BY pe.playerID) as B
