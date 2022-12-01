@@ -1,5 +1,5 @@
 -- Task A
-SELECT * FROM
+SELECT A.playerID, A.gamesBatted, B.gamesPitched, C.gamesFielded, A.rbi FROM
 (
     SELECT pe.playerID, SUM(B.G) as gamesBatted, AVG(B.RBI) as rbi, COUNT(*) as years
     FROM People pe
