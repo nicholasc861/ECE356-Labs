@@ -6,11 +6,11 @@ SELECT A.playerID,
        COALESCE(D.totalGames, 0) as totalGames,
        COALESCE(D.years, 0) as totalSeasons,
        COALESCE(A.rbi, 0) as totalRBI,
-       COALESCE(A.rbi / A.atBats, 0) as ABtoRBI,
-       COALESCE(B.pitchingER / B.gamesPitched, 0) as pitchingERA,
+       COALESCE(A.atBats, 0) as atBats,
+       COALESCE(B.pitchingER, 0) as pitchingER,
        COALESCE(F.managerWins, 0) as managerWins,
        COALESCE(E.awardsWon, 0) as awardsWon,
-       IF (A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame), 'Y', 'N') AS nominated
+       IF (A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame), 1, 0) AS nominated
 FROM
 (
     SELECT pe.playerID, SUM(B.G) as gamesBatted, SUM(B.AB) as atBats, SUM(B.RBI) as rbi
