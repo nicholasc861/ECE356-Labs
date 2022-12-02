@@ -10,6 +10,9 @@ DROP TABLE IF EXISTS Batting;
 DROP TABLE IF EXISTS Fielding;
 DROP TABLE IF EXISTS Pitching;
 DROP TABLE IF EXISTS People;
+DROP TABLE IF EXiSTS Appearances;
+DROP TABLE IF EXiSTS AwardsPlayers;
+DROP TABLE IF EXiSTS Managers;
 
 # Create all tables
 # Create HallOfFame
@@ -133,6 +136,72 @@ CREATE TABLE Fielding (
     CS int null,
     ZR int null
 );
+
+CREATE TABLE Appearances (
+  yearID int null,
+  teamID text null,
+  lgID text null,
+  playerID  text null,
+  G_all int null,
+  GS int null,
+  G_batting int null,
+  G_defense int null,
+  G_p int null,
+  G_c int null,
+  G_1b int null,
+  G_2b int null,
+  G_3b int null,
+  G_ss int null,
+  G_lf int null,
+  G_cf int null,
+  G_rf int null,
+  G_of int null,
+  G_dh int null,
+  G_ph int null,
+  G_pr int null 
+);
+
+CREATE TABLE AwardsPlayers (
+    playerID text null,
+    awardID text null,
+    yearID int null,
+    lgID text null,
+    tie text null,
+    note text null
+);
+
+CREATE TABLE Managers (
+    playerID text null,
+    yearID int null,
+    teamID text null,
+    lgID text null,
+    inseason int null,
+    G int null,
+    W int null,
+    L int null,
+    ranking int null,
+    plyrMgr text null
+);
+
+CREATE TABLE AllstarFull (
+    playerID text null,
+    yearID int null,
+    gameNum int null,
+    gameID text null,
+    teamID text null,
+    lgID text null,
+    GP int null,
+    startingPos int null
+);
+
+CREATE TABLE Salaries (
+    yearID int null,
+    teamID text null,
+    lgID text null,
+    playerID text null,
+    salary int null
+);
+
 -- Import People.csv
 LOAD DATA LOCAL INFILE "./baseball_data/People.csv"
 INTO TABLE People
@@ -167,4 +236,40 @@ INTO TABLE Fielding
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
+
+-- Import Appearances.csv
+LOAD DATA LOCAL INFILE "./baseball_data/Appearances.csv"
+INTO TABLE Appearances
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+-- Import AwardsPlayers.csv
+LOAD DATA LOCAL INFILE "./baseball_data/AwardsPlayers.csv"
+INTO TABLE AwardsPlayers
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+-- Import Managers.csv
+LOAD DATA LOCAL INFILE "./baseball_data/Managers.csv"
+INTO TABLE Managers
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+-- Import AllstarFull.csv
+LOAD DATA LOCAL INFILE "./baseball_data/AllstarFull.csv"
+INTO TABLE AllstarFull
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+-- Import Salaries.csv
+LOAD DATA LOCAL INFILE "./baseball_data/Salaries.csv"
+INTO TABLE Salaries
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
 

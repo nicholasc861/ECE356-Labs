@@ -22,7 +22,7 @@ def build_decision_tree(data):
 
     for row in data:
         values = list(row.values())[1:]
-        values = [int(i) for i in values]
+        values = [float(i) for i in values]
 
         X.append(values[0:len(values)-1])
         Y.append(values[-1])
@@ -37,7 +37,7 @@ def predict_from_tree(clf, data):
 
     for row in data:
         values = list(row.values())[1:]
-        values = [int(i) for i in values]
+        values = [float(i) for i in values]
 
         X.append(values[0:len(values)-1])
         Y.append(values[-1])
