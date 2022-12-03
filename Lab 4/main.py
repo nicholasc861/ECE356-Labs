@@ -9,6 +9,9 @@ import math
 FILE_NAME = "./Task_A.csv"
 TRAINING_DATA_PERCENTAGE = 0.8
 
+TASK_A_CLASS_WEIGHT = {0: 0.2, 1: 0.8}
+TASK_B_CLASS_WEIGHT = {0: 0.4, 1: 0.6}
+
 def read_csv(file_name):
     f = open(file_name)
     
@@ -27,7 +30,7 @@ def build_decision_tree(data):
         X.append(values[0:len(values)-1])
         Y.append(values[-1])
 
-    clf = tree.DecisionTreeClassifier(min_samples_leaf=45, max_depth=30, class_weight={0: 0.1, 1: 0.9})
+    clf = tree.DecisionTreeClassifier(min_samples_leaf=45, max_depth=30, class_weight=TASK_A_CLASS_WEIGHT)
     clf = clf.fit(X, Y)
 
     return clf
@@ -62,7 +65,7 @@ def main():
         predicted_ans = predict_from_tree(clf, testing_data)
 
 
-        actually_nominated_players = [int(i["nominated"]) for i in testing_data]
+        actually_nominated_players = [int(i["class"]) for i in testing_data]
         tn, fp, fn, tp = confusion_matrix(actually_nominated_players,predicted_ans).ravel()
 
         tp_rate += tp/(tp+fn)
