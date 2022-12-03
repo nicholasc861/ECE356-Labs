@@ -83,6 +83,7 @@ SELECT A.playerID,
         COALESCE(F.managerWins, 0) as managerWins,
         COALESCE(E.topAwardsWon, 0) as topAwardsWon,
         COALESCE(G.allStar, 0) as allstarAppearances,
+        COALESCE(H.porportionalsal, 1) as porportionalsal,
         IF (A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame WHERE inducted = 'Y'), 1, 0) AS class
 FROM
 (

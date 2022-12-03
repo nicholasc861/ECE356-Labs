@@ -1,16 +1,24 @@
 #!/Users/nicholasc/Documents/School/Waterloo\ CE\ \(2019-2024\)/Year\ 4\ \(2022\ :\ 2023\)/Term\ 3B\ \(Fall\ 2022\)/ECE356\ -\ Database\ Systems/Labs/Lab\ 4/venv/bin/python3
 from sklearn import tree
-from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
 import matplotlib.pyplot as plt
 import random
 import csv
 import math
 
-FILE_NAME = "./Task_A.csv"
+FILE_NAME = "./Task_B.csv"
 TRAINING_DATA_PERCENTAGE = 0.8
 
-TASK_A_CLASS_WEIGHT = {0: 0.2, 1: 0.8}
-TASK_B_CLASS_WEIGHT = {0: 0.4, 1: 0.6}
+# TASK A Hyperparameters
+TASK_A_CLASS_WEIGHT = {0: 0.38, 1: 0.62}
+TASK_A_MIN_LEAF=75
+TASK_A_MAX_DEPTH=30
+
+# TASK B Hyperparameters
+TASK_B_CLASS_WEIGHT = {0: 0.45, 1: 0.55}
+TASK_B_MIN_LEAF=15
+TASK_B_MAX_DEPTH=30
+
 
 def read_csv(file_name):
     f = open(file_name)
@@ -30,7 +38,7 @@ def build_decision_tree(data):
         X.append(values[0:len(values)-1])
         Y.append(values[-1])
 
-    clf = tree.DecisionTreeClassifier(min_samples_leaf=45, max_depth=30, class_weight=TASK_A_CLASS_WEIGHT)
+    clf = tree.DecisionTreeClassifier(min_samples_leaf=TASK_B_MIN_LEAF, max_depth=TASK_B_MAX_DEPTH, class_weight=TASK_B_CLASS_WEIGHT)
     clf = clf.fit(X, Y)
 
     return clf
@@ -50,7 +58,7 @@ def predict_from_tree(clf, data):
 
 def main():
     data = read_csv(FILE_NAME)
-    tp_rate, fn_rate, total_acc, total_recall, total_prec = 0, 0, 0, 0, 0
+    tp_rate, fn_rate, total_acc, total_recall, total_prec, total_f1 = 0, 0, 0, 0, 0, 0
 
     for j in range(0, 5):
         training_indexes = random.sample(range(len(data)), math.floor(int(len(data))*TRAINING_DATA_PERCENTAGE))
@@ -73,10 +81,12 @@ def main():
         accuracy = accuracy_score(actually_nominated_players,predicted_ans)
         recall = recall_score(actually_nominated_players,predicted_ans)
         precision = precision_score(actually_nominated_players,predicted_ans)
+        f1 = f1_score(actually_nominated_players, predicted_ans)
 
         total_acc += accuracy
         total_recall += recall
         total_prec += precision
+        total_f1 += f1
 
         print(f"Run \t{j}")
         print(f"True Negatives: \t{tn}")
@@ -88,6 +98,7 @@ def main():
         print(f"Accuracy: \t{accuracy}")
         print(f"Recall: \t{recall}")    
         print(f"Precision: \t{precision}")
+        print(f"F1 Score: \t{f1}")
         print("\n")
     
     print("Average Metrics:")
@@ -96,6 +107,7 @@ def main():
     print(f"Accuracy: \t{total_acc/5}")
     print(f"Recall: \t{total_recall/5}")    
     print(f"Precision: \t{total_prec/5}")
+    print(f"F1 Score: \t{total_f1/5}")
 
 
 
