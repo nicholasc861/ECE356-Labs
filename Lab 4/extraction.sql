@@ -64,14 +64,14 @@ LEFT JOIN (
     on s1.yearID = s2.yearID
     GROUP BY s1.playerID
 )as H
-on A.playerID = H.playerID;
+on A.playerID = H.playerID
+WHERE F.managerGames > 0 OR D.totalGames > 0;
 
 -- Task B
 SELECT A.playerID,
         COALESCE(A.gamesBatted, 0) as gamesBatted,
         COALESCE(A.rbi, 0) as totalRBI,
         COALESCE(A.hr, 0) as totalHR,
-        COALESCE(A.atBats, 0) as atBats,
         COALESCE(B.gamesPitched, 0) as gamesPitched,
         COALESCE(B.pitchingER, 0) as pitchingER,
         COALESCE(B.pitchingERA, 0) as pitchingERA,
@@ -83,7 +83,7 @@ SELECT A.playerID,
         COALESCE(F.managerWins, 0) as managerWins,
         COALESCE(E.topAwardsWon, 0) as topAwardsWon,
         COALESCE(G.allStar, 0) as allstarAppearances,
-        COALESCE(H.porportionalsal, 1) as porportionalsal,
+        COALESCE(H.porportionalsal, 1) as porportionalSal,
         IF (A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame WHERE inducted = 'Y'), 1, 0) AS class
 FROM
 (
@@ -129,11 +129,12 @@ LEFT JOIN (
     GROUP BY pe.playerID) as G
 ON A.playerID = G.playerID
 LEFT JOIN (
-    SELECT s1.playerID, AVG(s1.salary/s2.avg_sal) as porportionalsal
+    SELECT s1.playerID, AVG(s1.salary/s2.avg_sal) as porportionalSal
     FROM Salaries as s1 JOIN (SELECT yearID, AVG(salary) as avg_sal FROM Salaries
     GROUP BY yearID) as s2
     on s1.yearID = s2.yearID
     GROUP BY s1.playerID
 ) as H
 on A.playerID = H.playerID
-WHERE A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame);
+WHERE A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame)
+AND (F.managerGames > 0 OR D.totalGames > 0);
