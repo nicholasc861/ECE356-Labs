@@ -203,7 +203,7 @@ def main():
         print("\n")
 
         fig = plt.figure(figsize=(25,20))
-        _ = tree.plot_tree(clf, feature_names=features[1:-1], class_names=['YES', 'NO'])
+        _ = tree.plot_tree(clf, feature_names=features[1:-1], class_names=['NO', 'YES'])
         fig.savefig(f"decisiontree{j+1}.png")
     
     print("Average Metrics:")
