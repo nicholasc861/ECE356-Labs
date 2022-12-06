@@ -13,7 +13,7 @@ SELECT A.playerID,
         COALESCE(F.managerWins, 0) as managerWins,
         COALESCE(E.awardsWon, 0) as totalAwards,
         COALESCE(G.allStar, 0) as allstarAppearances,
-        COALESCE(H.porportionalsal, 1) as porportionalSal,
+        COALESCE(H.proportionalSal, 1) as proportionalSal,
         IF (A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame), 1, 0) AS class
 FROM
 (
@@ -58,41 +58,39 @@ LEFT JOIN (
     GROUP BY pe.playerID) as G
 ON A.playerID = G.playerID
 LEFT JOIN (
-    SELECT s1.playerID, AVG(s1.salary/s2.avg_sal) as porportionalsal
+    SELECT s1.playerID, AVG(s1.salary/s2.avg_sal) as proportionalSal
     FROM Salaries as s1 JOIN (SELECT yearID, AVG(salary) as avg_sal FROM Salaries
     GROUP BY yearID) as s2
     on s1.yearID = s2.yearID
     GROUP BY s1.playerID
 )as H
-on A.playerID = H.playerID
-WHERE F.managerGames > 0 OR D.totalGames > 0;
+on A.playerID = H.playerID;
 
 -- Task B
 SELECT A.playerID,
         COALESCE(A.gamesBatted, 0) as gamesBatted,
         COALESCE(A.rbi, 0) as totalRBI,
         COALESCE(A.hr, 0) as totalHR,
+        COALESCE(A.battingAverage, 0) as battingAverage,
         COALESCE(B.gamesPitched, 0) as gamesPitched,
-        COALESCE(B.pitchingER, 0) as pitchingER,
         COALESCE(B.pitchingERA, 0) as pitchingERA,
-        COALESCE(B.baopp, 0) as opponentBattingAvg,
+		COALESCE(B.strikeOuts, 0) as strikeOuts,
         COALESCE(C.gamesFielded, 0) as gamesFielded,
         COALESCE(C.po, 0) as totalPutOut,
         COALESCE(D.totalGames, 0) as totalGames,
         COALESCE(D.years, 0) as totalSeasons,
         COALESCE(F.managerWins, 0) as managerWins,
-        COALESCE(E.topAwardsWon, 0) as topAwardsWon,
         COALESCE(G.allStar, 0) as allstarAppearances,
-        COALESCE(H.porportionalsal, 1) as porportionalSal,
+        COALESCE(H.proportionalSal, 1) as proportionalSal,
         IF (A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame WHERE inducted = 'Y'), 1, 0) AS class
 FROM
 (
-    SELECT pe.playerID, SUM(B.G) as gamesBatted, SUM(B.AB) as atBats, SUM(B.RBI) as rbi, SUM(B.HR) as hr
+    SELECT pe.playerID, SUM(B.G) as gamesBatted, SUM(B.RBI) as rbi, SUM(B.HR) as hr, SUM(b.H) / SUM(B.AB) as battingAverage
     FROM People pe
     LEFT JOIN Batting B on pe.playerID = B.playerID
     GROUP BY pe.playerID) as A
 JOIN (
-    SELECT pe.playerID, SUM(P.G) as gamesPitched, SUM(P.ER) as pitchingER, AVG(P.ERA) as pitchingERA, AVG(P.BAOpp) as baopp
+    SELECT pe.playerID, SUM(P.G) as gamesPitched, IF(AVG(P.ERA) = 0, 5.15, AVG(P.ERA)) as pitchingERA, SUM(P.SO) as strikeOuts
     FROM People pe
     LEFT JOIN Pitching P on pe.playerID = P.playerID
     GROUP BY pe.playerID) as B
@@ -109,15 +107,8 @@ JOIN (
     LEFT JOIN Appearances a on pe.playerID = a.playerID
     GROUP BY pe.playerID) as D
 ON A.playerID = D.playerID
-LEFT JOIN (
-    SELECT pe.playerID,
-           SUM(IF(a.awardID = "Most Valuable Player" or a.awardID = "Cy Young Award" or a.awardID = "Gold Glove", 1, 0)) as topAwardsWon
-    FROM People pe
-    INNER JOIN AwardsPlayers a on pe.playerID = a.playerID
-    GROUP BY pe.playerID) as E
-ON A.playerID = E.playerID
 JOIN (
-    SELECT pe.playerID, SUM(m.W) as managerWins, SUM(m.G) as managerGames
+    SELECT pe.playerID, SUM(m.W) as managerWins
     FROM People pe
     LEFT JOIN Managers m on pe.playerID = m.playerID
     GROUP BY pe.playerID) as F
@@ -129,12 +120,11 @@ LEFT JOIN (
     GROUP BY pe.playerID) as G
 ON A.playerID = G.playerID
 LEFT JOIN (
-    SELECT s1.playerID, AVG(s1.salary/s2.avg_sal) as porportionalSal
+    SELECT s1.playerID, AVG(s1.salary/s2.avg_sal) as proportionalSal
     FROM Salaries as s1 JOIN (SELECT yearID, AVG(salary) as avg_sal FROM Salaries
     GROUP BY yearID) as s2
     on s1.yearID = s2.yearID
     GROUP BY s1.playerID
 ) as H
 on A.playerID = H.playerID
-WHERE A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame)
-AND (F.managerGames > 0 OR D.totalGames > 0);
+WHERE A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame);
