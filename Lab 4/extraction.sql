@@ -1,4 +1,5 @@
 -- Task A
+use ece356lab4;
 SELECT A.playerID,
         COALESCE(A.gamesBatted, 0) as gamesBatted,
         COALESCE(A.rbi, 0) as totalRBI,
@@ -109,7 +110,7 @@ JOIN (
     GROUP BY pe.playerID) as D
 ON A.playerID = D.playerID
 JOIN (
-    SELECT pe.playerID, SUM(m.W) as managerWins
+    SELECT pe.playerID, SUM(m.W) as managerWins, sum(m.G) as managerGames
     FROM People pe
     LEFT JOIN Managers m on pe.playerID = m.playerID
     GROUP BY pe.playerID) as F
