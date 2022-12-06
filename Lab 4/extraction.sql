@@ -64,7 +64,8 @@ LEFT JOIN (
     on s1.yearID = s2.yearID
     GROUP BY s1.playerID
 )as H
-on A.playerID = H.playerID;
+on A.playerID = H.playerID
+WHERE (D.totalGames > 0 OR F.managerGames > 0);
 
 -- Task B
 SELECT A.playerID,
@@ -127,4 +128,4 @@ LEFT JOIN (
     GROUP BY s1.playerID
 ) as H
 on A.playerID = H.playerID
-WHERE A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame);
+WHERE A.playerID IN (SELECT DISTINCT playerID FROM HallOfFame) AND (D.totalGames > 0 OR F.managerGames > 0);

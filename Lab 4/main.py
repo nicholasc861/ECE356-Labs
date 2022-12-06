@@ -20,7 +20,7 @@ TASK_A_PARAMS = {
 
 # TASK B Hyperparameters
 TASK_B_PARAMS = {
-    "ccp_alpha": 0.0011532,
+    "ccp_alpha": 0.0009532,
     "min_samples_leaf": 7,
     "min_samples_split": 6,
     "max_depth": 6,
@@ -102,7 +102,7 @@ def read_csv(file_name):
     
     # Parse CSV to list of dictionaries
     rows = csv.DictReader(f)
-    return list(rows)
+    return (list(rows), rows.fieldnames)
 
 def build_decision_tree(x_train, y_train, params):
     clf = tree.DecisionTreeClassifier(**params)
@@ -128,7 +128,7 @@ def main():
         print("Please enter taska or taskb to run the predictor.")
 
 
-    data = read_csv(file_name)
+    data, features = read_csv(file_name)
     tp_rate, fn_rate, total_acc, total_recall, total_prec, total_f1 = 0, 0, 0, 0, 0, 0
 
     for j in range(0, 5):
@@ -201,6 +201,10 @@ def main():
         print(f"Precision: \t{precision}")
         print(f"F1 Score: \t{f1}")
         print("\n")
+
+        fig = plt.figure(figsize=(25,20))
+        _ = tree.plot_tree(clf, feature_names=features[1:-1], class_names=['YES', 'NO'])
+        fig.savefig(f"decisiontree{j+1}.png")
     
     print("Average Metrics:")
     print(f"True Positive Rate: \t{tp_rate/5}")
