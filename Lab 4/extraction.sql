@@ -1,5 +1,4 @@
 -- Task A
-use ece356lab4;
 SELECT A.playerID,
         COALESCE(A.gamesBatted, 0) as gamesBatted,
         COALESCE(A.rbi, 0) as totalRBI,
