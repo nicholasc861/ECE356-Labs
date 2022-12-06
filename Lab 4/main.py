@@ -12,22 +12,80 @@ TRAINING_DATA_PERCENTAGE = 0.8
 
 # TASK A Hyperparameters
 TASK_A_PARAMS = {
-    "ccp_alpha": 0.00025363,
-    "class_weight": {0: 0.25, 1: 0.55},
-    "min_samples_leaf": 0.010,
-    "max_depth": 20
+    "ccp_alpha": 0.00012412,
+    "max_depth": 5,
+    "min_samples_leaf": 19,
+    "min_samples_split": 2,
 }
 
 # TASK B Hyperparameters
 TASK_B_PARAMS = {
-    "ccp_alpha": 0.0023,
-    "min_samples_leaf": 0.005,
+    "ccp_alpha": 0.0011532,
+    "min_samples_leaf": 7,
+    "min_samples_split": 6,
     "max_depth": 6,
 }
+def plot_metric(x_train, y_train, x_test, y_test):
+    max_depth = list(range(1,28))
+    test_acc= []
+    train_acc = []
+    test_f1 = []
+    train_f1 = []
+    test_prec = []
+    train_prec = []
+    test_recall = []
+    train_recall = []
 
-def find_best_params(clf, x_train, y_train):
+    for i in range(1, 28):
+   
+        clf = tree.DecisionTreeClassifier(max_depth=i)
+
+        clf = clf.fit(x_train, y_train)
+
+        test_pred = clf.predict(x_test)
+        train_pred = clf.predict(x_train)
+
+        test_acc.append(accuracy_score(y_test, test_pred))
+        train_acc.append(accuracy_score(y_train, train_pred))
+        test_f1.append(f1_score(y_test, test_pred))
+        train_f1.append(f1_score(y_train, train_pred))
+        test_prec.append(precision_score(y_test, test_pred))
+        train_prec.append(precision_score(y_train, train_pred))
+        test_recall.append(recall_score(y_test, test_pred))
+        train_recall.append(recall_score(y_train, train_pred))
+
+    figure, axis = plt.subplots(2, 2)
+
+    axis[0,0].plot(max_depth, test_acc, label="test_acc")
+    axis[0,0].plot(max_depth, train_acc, label="train_acc")
+    axis[0,0].set(ylabel="accuracy", xlabel="max_depth")
+    axis[0,0].grid()
+    axis[0,0].legend()
+
+    axis[0,1].plot(max_depth, test_f1, label="test_f1")
+    axis[0,1].plot(max_depth, train_f1, label="train_f1")
+    axis[0,1].set(ylabel="f1_score", xlabel="max_depth")
+    axis[0,1].grid()
+    axis[0,1].legend()
+
+    axis[1,1].plot(max_depth, test_prec, label="test_prec")
+    axis[1,1].plot(max_depth, train_prec, label="train_prec")
+    axis[1,1].set(ylabel="precision", xlabel="max_depth")
+    axis[1,1].grid()
+    axis[1,1].legend()
+
+    axis[1,0].plot(max_depth, test_recall, label="test_recall")
+    axis[1,0].plot(max_depth, train_recall, label="train_recall")
+    axis[1,0].set(ylabel="recall", xlabel="max_depth")
+    axis[1,0].grid()
+    axis[1,0].legend()
+    
+    plt.show()
+
+
+def find_best_params(clf, x_train, y_train, ccps):
     test_params = {
-        "class_weight": ["balanced", None],
+        "ccp_alpha": ccps[4:int(len(ccps)/2)],
         "min_samples_leaf": range(2, 20),
         "min_samples_split": range(2, 20),
         "max_depth": range(1, 30)
@@ -37,7 +95,6 @@ def find_best_params(clf, x_train, y_train):
     grid.fit(x_train, y_train)
     print(grid.best_params_)
     print(grid.best_score_)
-
 
 
 def read_csv(file_name):
@@ -90,12 +147,10 @@ def main():
 
         clf = build_decision_tree(x_train, y_train, params)
 
-        # Check for best hyperparameters
-        # find_best_params(clf, x_train, y_train)
+
 
         predicted_ans = predict_from_tree(clf, x_test)
         predicted_train = predict_from_tree(clf, x_train)
-        print(clf.get_depth())
 
         train_tn, train_fp, train_fn, train_tp = confusion_matrix(y_train, predicted_train).ravel()
 
@@ -108,7 +163,13 @@ def main():
         precision = precision_score(y_test,predicted_ans)
         f1 = f1_score(y_test, predicted_ans)
 
-        # print(clf.cost_complexity_pruning_path(x_train, y_train))
+        # ccps = clf.cost_complexity_pruning_path(x_train, y_train)
+
+        # Check for best hyperparameters
+        # find_best_params(clf, x_train, y_train, ccps.ccp_alphas)
+
+        # Check for best depth
+        # plot_metric(x_train,y_train,x_test,y_test)
 
         total_acc += accuracy
         total_recall += recall
